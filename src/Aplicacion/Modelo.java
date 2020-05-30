@@ -321,7 +321,7 @@ public class Modelo {
 	public Modelo() {
 		try {
 			// Este sirve para Oracle
-			Class.forName("oracle.jdbc.driver.OracleDriver");
+			//Class.forName("oracle.jdbc.driver.OracleDriver");
 			// Este sirve para MySQL
 			Class.forName("com.mysql.cj.jdbc.Driver");
 			cargarFicheroBD();
@@ -655,6 +655,7 @@ public class Modelo {
 			stmt.setString(3, rol);
 			stmt.executeUpdate();
 			System.out.println("Se ha insertado el usuario correctamente");
+			
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -673,6 +674,7 @@ public class Modelo {
 			stmt.setString(5, usr);
 			stmt.executeUpdate();
 			System.out.println("Se ha insertado el tutor correctamente");
+			
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -700,8 +702,10 @@ public class Modelo {
 			stmtPertenece.setString(3, txtAnoAcademico);
 			stmtPertenece.executeUpdate();
 			System.out.println("Se ha insertado el alumno en el grupo");
+			resultado = "Correcto";
 			tablas();
 		} catch (SQLException e) {
+			resultado = "Incorrecto";
 			e.printStackTrace();
 		}
 		
@@ -722,8 +726,10 @@ public class Modelo {
 			stmt.setString(7, txtResponsableEmpresa);
 			stmt.executeUpdate();
 			System.out.println("Se ha insertado la empresa correctamente");
+			resultado = "Correcto";
 			tablas();
 		} catch (SQLException e) {
+			resultado = "Incorrecto";
 			e.printStackTrace();
 		}
 		tutEmpresasA.actualizar();		
@@ -750,8 +756,10 @@ public class Modelo {
 			stmtPertenece.setString(3, txtAnoAcademico);
 			stmtPertenece.executeUpdate();
 			System.out.println("Se ha insertado el alumno en el grupo");
+			resultado = "Correcto";
 			tablas();
 		} catch (SQLException e) {
+			resultado = "Incorrecto";
 			e.printStackTrace();
 		}
 		
@@ -773,8 +781,10 @@ public class Modelo {
 			stmt.setString(7, txtResponsableEmpresa);
 			stmt.executeUpdate();
 			System.out.println("Se ha insertado la empresa correctamente");
+			resultado = "Correcto";
 			tablas();
 		} catch (SQLException e) {
+			resultado = "Incorrecto";
 			e.printStackTrace();
 		}
 		dirEmpresasA.actualizar();			
@@ -793,8 +803,10 @@ public class Modelo {
 			stmtAlumno.setString(2, txtId);
 			stmtAlumno.executeUpdate();
 			System.out.println("Se ha borrado el alumno de la tabla ALUMNO correctamente");
+			resultado = "Correcto";
 			tablas();
 		} catch (SQLException e) {
+			resultado = "Incorrecto";
 			e.printStackTrace();
 		}
 		dirAlumnosEdE.actualizar();
@@ -813,8 +825,10 @@ public class Modelo {
 			stmtAlumno.setString(2, txtId);
 			stmtAlumno.executeUpdate();
 			System.out.println("Se ha borrado el alumno de la tabla ALUMNO correctamente");
+			resultado = "Correcto";
 			tablas();
 		} catch (SQLException e) {
+			resultado = "Incorrecto";
 			e.printStackTrace();
 		}
 		tutAlumnosEdE.actualizar();
@@ -828,8 +842,10 @@ public class Modelo {
 			stmt.setString(2, txtCIF);
 			stmt.executeUpdate();
 			System.out.println("Se ha borrado la empresa correctamente");
+			resultado = "Correcto";
 			tablas();
 		} catch (SQLException e) {
+			resultado = "Incorrecto";
 			e.printStackTrace();
 		}
 		dirEmpresasE.actualizar();
@@ -843,8 +859,10 @@ public class Modelo {
 			stmt.setString(2, txtCIF);
 			stmt.executeUpdate();
 			System.out.println("Se ha borrado la empresa correctamente");
+			resultado = "Correcto";
 			tablas();
 		} catch (SQLException e) {
+			resultado = "Incorrecto";
 			e.printStackTrace();
 		}
 		tutEmpresasE.actualizar();
@@ -858,8 +876,10 @@ public class Modelo {
 			stmt.setString(2, txtExpediente);
 			stmt.executeUpdate();
 			System.out.println("Se ha modificado el alumno correctamente");
+			resultado = "Correcto";
 			tablas();
 		} catch (SQLException e) {
+			resultado = "Incorrecto";
 			e.printStackTrace();
 		}
 		dirAlumnosEdM.actualizar();
@@ -873,8 +893,10 @@ public class Modelo {
 			stmt.setString(2, txtCIF);
 			stmt.executeUpdate();
 			System.out.println("Se ha modificado la empresa correctamente");
+			resultado = "Correcto";
 			tablas();
 		} catch (SQLException e) {
+			resultado = "Incorrecto";
 			e.printStackTrace();
 		}
 		dirEmpresasM.actualizar();
@@ -888,8 +910,10 @@ public class Modelo {
 			stmt.setString(2, txtCIF);
 			stmt.executeUpdate();
 			System.out.println("Se ha modificado la empresa correctamente");
+			resultado = "Correcto";
 			tablas();
 		} catch (SQLException e) {
+			resultado = "Incorrecto";
 			e.printStackTrace();
 		}
 		dirEmpresasM.actualizar();
@@ -903,8 +927,10 @@ public class Modelo {
 			stmt.setString(2, txtExpediente);
 			stmt.executeUpdate();
 			System.out.println("Se ha modificado el alumno correctamente");
+			resultado = "Correcto";
 			tablas();
 		} catch (SQLException e) {
+			resultado = "Incorrecto";
 			e.printStackTrace();
 		}
 		tutAlumnosEdM.actualizar();

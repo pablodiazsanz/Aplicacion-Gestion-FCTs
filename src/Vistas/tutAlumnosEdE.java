@@ -223,6 +223,15 @@ public class tutAlumnosEdE extends JFrame implements Vistas{
 	}
 
 	public void actualizar() {
-		miControlador.tutorAlumnosEditar();
+		String resultado = miModelo.getResultado();
+		if (resultado.equals("Correcto")) {
+			miControlador.tutorAlumnosEditar();
+			lblInfo.setText("Introduzca los Datos");
+			lblIncorrecto.setText("");
+		}
+		else {
+			lblInfo.setText("");
+			lblIncorrecto.setText("Algun dato es incorrecto. Vuelva a intentarlo.");
+		}
 	}
 }

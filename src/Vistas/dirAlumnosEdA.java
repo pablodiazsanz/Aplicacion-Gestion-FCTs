@@ -6,6 +6,7 @@ import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import javax.swing.AbstractButton;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -54,6 +55,9 @@ public class dirAlumnosEdA extends JFrame implements Vistas{
 	private JTextField txtCodGrupo;
 	private JTextField txtAnoAcademico;
 	private JButton btnVolver;
+	private JPanel panelInformacion;
+	private JLabel lblInfo;
+	private JLabel lblIncorrecto;
 	
 	public void setControlador(Controlador miControlador) {
 		this.miControlador = miControlador;
@@ -256,16 +260,17 @@ public class dirAlumnosEdA extends JFrame implements Vistas{
 		txtAnoAcademico.setBounds(224, 312, 289, 21);
 		panelAnadir.add(txtAnoAcademico);
 		
-		JPanel panelInformacion = new JPanel();
+		panelInformacion = new JPanel();
 		panelInformacion.setLayout(null);
 		panelInformacion.setBounds(89, 68, 424, 31);
 		panelAnadir.add(panelInformacion);
 		
-		JLabel lblInformacion = new JLabel("Introduzca los Datos");
-		lblInformacion.setBounds(6, 5, 412, 20);
-		panelInformacion.add(lblInformacion);
+		lblInfo = new JLabel("Introduzca los Datos");
+		lblInfo.setBounds(6, 5, 412, 20);
+		panelInformacion.add(lblInfo);
 		
-		JLabel lblIncorrecto = new JLabel("");
+		lblIncorrecto = new JLabel("");
+		lblIncorrecto.setForeground(new Color(220, 20, 60));
 		lblIncorrecto.setBounds(6, 5, 412, 20);
 		panelInformacion.add(lblIncorrecto);
 	}
@@ -308,6 +313,15 @@ public class dirAlumnosEdA extends JFrame implements Vistas{
 	}
 	
 	public void actualizar() {
-		miControlador.directorAlumnoEditar();
+		String resultado = miModelo.getResultado();
+		if (resultado.equals("Correcto")) {
+			miControlador.directorAlumnoEditar();
+			lblInfo.setText("Introduzca los Datos");
+			lblIncorrecto.setText("");
+		}
+		else {
+			lblInfo.setText("");
+			lblIncorrecto.setText("Algun dato es incorrecto. Vuelva a intentarlo.");
+		}
 	}
 }
