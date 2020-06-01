@@ -5,7 +5,6 @@ import Vistas.configLogin;
 import Vistas.crearCuenta;
 import Vistas.datosTutEmp;
 import Vistas.dirAlumnos;
-import Vistas.dirAlumnosA;
 import Vistas.dirAlumnosB;
 import Vistas.dirAlumnosEd;
 import Vistas.dirAlumnosEdA;
@@ -25,7 +24,6 @@ import Vistas.empTutoresB;
 import Vistas.empresa;
 import Vistas.login;
 import Vistas.tutAlumnos;
-import Vistas.tutAlumnosA;
 import Vistas.tutAlumnosB;
 import Vistas.tutAlumnosEd;
 import Vistas.tutAlumnosEdA;
@@ -53,7 +51,6 @@ public class Controlador {
 	private crearCuenta crearCuenta;
 	private datosTutEmp datosTutEmp;
 	private dirAlumnos dirAlumnos;
-	private dirAlumnosA dirAlumnosA;
 	private dirAlumnosB dirAlumnosB;
 	private dirAlumnosEd dirAlumnosEd;
 	private dirAlumnosEdA dirAlumnosEdA;
@@ -79,7 +76,6 @@ public class Controlador {
 	private empTutoresB empTutoresB;
 	private login login;
 	private tutAlumnos tutAlumnos;
-	private tutAlumnosA tutAlumnosA;
 	private tutAlumnosB tutAlumnosB;
 	private tutAlumnosEd tutAlumnosEd;
 	private tutAlumnosEdA tutAlumnosEdA;
@@ -114,10 +110,6 @@ public class Controlador {
 	
 	public void setDirAlumnos(dirAlumnos dirAlumnos) {
 		this.dirAlumnos = dirAlumnos;
-	}
-
-	public void setDirAlumnosA(dirAlumnosA dirAlumnosA) {
-		this.dirAlumnosA = dirAlumnosA;
 	}
 
 	public void setDirAlumnosB(dirAlumnosB dirAlumnosB) {
@@ -218,10 +210,6 @@ public class Controlador {
 
 	public void setTutAlumnos(tutAlumnos tutAlumnos) {
 		this.tutAlumnos = tutAlumnos;
-	}
-
-	public void setTutAlumnosA(tutAlumnosA tutAlumnosA) {
-		this.tutAlumnosA = tutAlumnosA;
 	}
 
 	public void setTutAlumnosB(tutAlumnosB tutAlumnosB) {
@@ -349,12 +337,6 @@ public class Controlador {
 		ventanaActiva = dirAlumnos;
 	}
 
-	public void directorAlumnoAnexos() {
-		ventanaActiva.setVisible(false);
-		dirAlumnosA.setVisible(true);
-		ventanaActiva = dirAlumnosA;
-
-	}
 
 	public void directorAlumnoBuscar() {
 		ventanaActiva.setVisible(false);
@@ -493,11 +475,6 @@ public class Controlador {
 		ventanaActiva =tutAlumnos;
 	}
 
-	public void tutorAlumnosAnexos() {
-		ventanaActiva.setVisible(false);
-		tutAlumnosA.setVisible(true);
-		ventanaActiva =tutAlumnosA;
-	}
 
 	public void tutorAlumnosBuscar() {
 		ventanaActiva.setVisible(false);

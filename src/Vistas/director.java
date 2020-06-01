@@ -100,7 +100,7 @@ public class director extends JFrame implements Vistas{
 			}
 		});
 		btnAlumnos.setBackground(new Color(220, 20, 60));
-		btnAlumnos.setBounds(122, 129, 188, 140);
+		btnAlumnos.setBounds(74, 129, 188, 140);
 		panel_1.add(btnAlumnos);
 
 		btnTutores = new JButton("Tutores");
@@ -111,7 +111,7 @@ public class director extends JFrame implements Vistas{
 		});
 		btnTutores.setIcon(new ImageIcon(director.class.getResource("/img/tutor.png")));
 		btnTutores.setBackground(new Color(220, 20, 60));
-		btnTutores.setBounds(122, 306, 188, 140);
+		btnTutores.setBounds(74, 306, 188, 140);
 		panel_1.add(btnTutores);
 
 		btnEmpresas = new JButton("Empresas");
@@ -122,7 +122,7 @@ public class director extends JFrame implements Vistas{
 		});
 		btnEmpresas.setIcon(new ImageIcon(director.class.getResource("/img/empresa.png")));
 		btnEmpresas.setBackground(new Color(220, 20, 60));
-		btnEmpresas.setBounds(424, 129, 188, 140);
+		btnEmpresas.setBounds(482, 129, 188, 140);
 		panel_1.add(btnEmpresas);
 
 		btnGrupos = new JButton("Grupos");
@@ -133,13 +133,17 @@ public class director extends JFrame implements Vistas{
 		});
 		btnGrupos.setIcon(new ImageIcon(director.class.getResource("/img/grupo.png")));
 		btnGrupos.setBackground(new Color(220, 20, 60));
-		btnGrupos.setBounds(424, 306, 188, 140);
+		btnGrupos.setBounds(482, 306, 188, 140);
 		panel_1.add(btnGrupos);
+		
+		JButton btnInformes = new JButton("Informes");
+		btnInformes.setBackground(new Color(220, 20, 60));
+		btnInformes.setBounds(297, 233, 152, 111);
+		panel_1.add(btnInformes);
 	}
 	
 	public void nombre() {
 		String nombre = miModelo.getNombre();
 		lblUsuario.setText("Usuario: " + nombre);
 	}
-
 }

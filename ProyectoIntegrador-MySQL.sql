@@ -392,7 +392,7 @@ COMMIT;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 
 /* 
- * -- SELECTS
+-- SELECTS
 
 -- Muestra todos los alumnos
 SELECT * FROM Alumno;
@@ -436,22 +436,52 @@ LEFT JOIN Tutor
 ON Gestiona.tutor_dni = Tutor.dni
 WHERE Tutor.users_usr=?;
 
--- Mustra todos los tutores
+-- Muestra todos los tutores
 SELECT * FROM Tutor;
 
 -- Muestra el tutor para cada empresa
 SELECT * FROM Tutor WHERE users_usr=?;
 
+
+
+-- INSERTS, UPDATES Y DELETES
+
+-- Modifica a los alumnos de director y tutor
 UPDATE ProyectoIntegrador.Alumno SET " + eleccion + "=? WHERE expediente=?
 
+-- Modifica a las empresas de director y tutor
 UPDATE ProyectoIntegrador.Empresa SET " + eleccion + "=? WHERE cif=?
 
+-- Elimina a las empresas de tutor y director
 DELETE FROM ProyectoIntegrador.Empresa WHERE nombre=? AND cif=?
 
+-- Elimina a los alumnos de tutor y director
 DELETE FROM ProyectoIntegrador.Pertenece WHERE alumno_expediente=?
 DELETE FROM ProyectoIntegrador.Alumno WHERE nombre=? AND expediente=?
 
+-- Inserta a las empresas de tutor y director
 INSERT INTO ProyectoIntegrador.Empresa (nombre, cif, direccion, localidad, telefono, email, responsable_empresa) VALUES (?, ?, ?, ?, ?, ?, ?)
 
+-- Inserta a los alumnos de tutor y director
 INSERT INTO ProyectoIntegrador.Pertenece (alumno_expediente, grupo_cod_grupo, año_academico) VALUES (?, ?, ?)
 INSERT INTO ProyectoIntegrador.Alumno (expediente, nombre, apellido, dni, fecha_nacimiento, nacionalidad) VALUES (?, ?, ?, ?, ?, ?)
+
+
+
+-- TABLAS DE LOS INFORMES
+
+-- Alumnos por tutor
+
+-- Tutores por ciclo
+
+-- Alumnos por empresa
+
+-- Alumnos en practicas por tutor
+
+-- Informe general para gestion de las practicas
+
+-- Informe que pide las aseguradoras
+
+
+*/
+

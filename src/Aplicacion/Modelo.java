@@ -18,7 +18,6 @@ import Vistas.configLogin;
 import Vistas.crearCuenta;
 import Vistas.datosTutEmp;
 import Vistas.dirAlumnos;
-import Vistas.dirAlumnosA;
 import Vistas.dirAlumnosB;
 import Vistas.dirAlumnosEd;
 import Vistas.dirAlumnosEdA;
@@ -44,7 +43,6 @@ import Vistas.empTutoresB;
 import Vistas.empresa;
 import Vistas.login;
 import Vistas.tutAlumnos;
-import Vistas.tutAlumnosA;
 import Vistas.tutAlumnosB;
 import Vistas.tutAlumnosEd;
 import Vistas.tutAlumnosEdA;
@@ -65,7 +63,6 @@ public class Modelo {
 	private crearCuenta crearCuenta;
 	private datosTutEmp datosTutEmp;
 	private dirAlumnos dirAlumnos;
-	private dirAlumnosA dirAlumnosA;
 	private dirAlumnosB dirAlumnosB;
 	private dirAlumnosEd dirAlumnosEd;
 	private dirAlumnosEdA dirAlumnosEdA;
@@ -91,7 +88,6 @@ public class Modelo {
 	private empTutoresB empTutoresB;
 	private login login;
 	private tutAlumnos tutAlumnos;
-	private tutAlumnosA tutAlumnosA;
 	private tutAlumnosB tutAlumnosB;
 	private tutAlumnosEd tutAlumnosEd;
 	private tutAlumnosEdA tutAlumnosEdA;
@@ -152,10 +148,6 @@ public class Modelo {
 
 	public void setDirAlumnos(dirAlumnos dirAlumnos) {
 		this.dirAlumnos = dirAlumnos;
-	}
-
-	public void setDirAlumnosA(dirAlumnosA dirAlumnosA) {
-		this.dirAlumnosA = dirAlumnosA;
 	}
 
 	public void setDirAlumnosB(dirAlumnosB dirAlumnosB) {
@@ -256,10 +248,6 @@ public class Modelo {
 
 	public void setTutAlumnos(tutAlumnos tutAlumnos) {
 		this.tutAlumnos = tutAlumnos;
-	}
-
-	public void setTutAlumnosA(tutAlumnosA tutAlumnosA) {
-		this.tutAlumnosA = tutAlumnosA;
 	}
 
 	public void setTutAlumnosB(tutAlumnosB tutAlumnosB) {
@@ -474,7 +462,6 @@ public class Modelo {
 				if (rol.equals("director")) {
 					director.nombre();
 					dirAlumnos.nombre();
-					dirAlumnosA.nombre();
 					dirAlumnosB.nombre();
 					dirAlumnosEd.nombre();
 					dirAlumnosEdA.nombre();
@@ -496,7 +483,6 @@ public class Modelo {
 				else if (rol.equals("tutor")) {
 					tutor.nombre();
 					tutAlumnos.nombre();
-					tutAlumnosA.nombre();
 					tutAlumnosB.nombre();
 					tutAlumnosEd.nombre();
 					tutAlumnosEdA.nombre();

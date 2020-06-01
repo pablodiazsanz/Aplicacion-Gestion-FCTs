@@ -3,7 +3,6 @@ import Vistas.configLogin;
 import Vistas.crearCuenta;
 import Vistas.datosTutEmp;
 import Vistas.dirAlumnos;
-import Vistas.dirAlumnosA;
 import Vistas.dirAlumnosB;
 import Vistas.dirAlumnosEd;
 import Vistas.dirAlumnosEdA;
@@ -29,7 +28,6 @@ import Vistas.empTutoresB;
 import Vistas.empresa;
 import Vistas.login;
 import Vistas.tutAlumnos;
-import Vistas.tutAlumnosA;
 import Vistas.tutAlumnosB;
 import Vistas.tutAlumnosEd;
 import Vistas.tutAlumnosEdA;
@@ -53,7 +51,6 @@ public class Lanzadera {
 		crearCuenta crearCuenta = new crearCuenta();
 		datosTutEmp datosTutEmp = new datosTutEmp();
 		dirAlumnos dirAlumnos = new dirAlumnos();
-		dirAlumnosA dirAlumnosA = new dirAlumnosA();
 		dirAlumnosB dirAlumnosB = new dirAlumnosB();
 		dirAlumnosEd dirAlumnosEd = new dirAlumnosEd();
 		dirAlumnosEdA dirAlumnosEdA = new dirAlumnosEdA();
@@ -79,7 +76,6 @@ public class Lanzadera {
 		empTutoresB empTutoresB = new empTutoresB();
 		login login = new login();
 		tutAlumnos tutAlumnos = new tutAlumnos();
-		tutAlumnosA tutAlumnosA = new tutAlumnosA();
 		tutAlumnosB tutAlumnosB = new tutAlumnosB();
 		tutAlumnosEd tutAlumnosEd = new tutAlumnosEd();
 		tutAlumnosEdA tutAlumnosEdA = new tutAlumnosEdA();
@@ -100,7 +96,6 @@ public class Lanzadera {
 		miControlador.setCrearCuenta(crearCuenta);
 		miControlador.setDatosTutEmp(datosTutEmp);
 		miControlador.setDirAlumnos(dirAlumnos);
-		miControlador.setDirAlumnosA(dirAlumnosA);
 		miControlador.setDirAlumnosB(dirAlumnosB);
 		miControlador.setDirAlumnosEd(dirAlumnosEd);
 		miControlador.setDirAlumnosEdA(dirAlumnosEdA);
@@ -126,7 +121,6 @@ public class Lanzadera {
 		miControlador.setEmpTutoresB(empTutoresB);
 		miControlador.setLogin(login);
 		miControlador.setTutAlumnos(tutAlumnos);
-		miControlador.setTutAlumnosA(tutAlumnosA);
 		miControlador.setTutAlumnosB(tutAlumnosB);
 		miControlador.setTutAlumnosEd(tutAlumnosEd);
 		miControlador.setTutAlumnosEdA(tutAlumnosEdA);
@@ -147,7 +141,6 @@ public class Lanzadera {
 		miModelo.setCrearCuenta(crearCuenta);
 		miModelo.setDatosTutEmp(datosTutEmp);
 		miModelo.setDirAlumnos(dirAlumnos);
-		miModelo.setDirAlumnosA(dirAlumnosA);
 		miModelo.setDirAlumnosB(dirAlumnosB);
 		miModelo.setDirAlumnosEd(dirAlumnosEd);
 		miModelo.setDirAlumnosEdA(dirAlumnosEdA);
@@ -173,7 +166,6 @@ public class Lanzadera {
 		miModelo.setEmpTutoresB(empTutoresB);
 		miModelo.setLogin(login);
 		miModelo.setTutAlumnos(tutAlumnos);
-		miModelo.setTutAlumnosA(tutAlumnosA);
 		miModelo.setTutAlumnosB(tutAlumnosB);
 		miModelo.setTutAlumnosEd(tutAlumnosEd);
 		miModelo.setTutAlumnosEdA(tutAlumnosEdA);
@@ -200,9 +192,6 @@ public class Lanzadera {
 		
 		dirAlumnos.setControlador(miControlador);
 		dirAlumnos.setModelo(miModelo);
-		
-		dirAlumnosA.setControlador(miControlador);
-		dirAlumnosA.setModelo(miModelo);
 		
 		dirAlumnosB.setControlador(miControlador);
 		dirAlumnosB.setModelo(miModelo);
@@ -278,9 +267,6 @@ public class Lanzadera {
 		
         tutAlumnos.setControlador(miControlador);
 		tutAlumnos.setModelo(miModelo);
-		
-		tutAlumnosA.setControlador(miControlador);
-		tutAlumnosA.setModelo(miModelo);
 		
 		tutAlumnosB.setControlador(miControlador);
 		tutAlumnosB.setModelo(miModelo);
