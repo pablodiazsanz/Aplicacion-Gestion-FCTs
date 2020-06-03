@@ -137,6 +137,11 @@ public class director extends JFrame implements Vistas{
 		panel_1.add(btnGrupos);
 		
 		JButton btnInformes = new JButton("Informes");
+		btnInformes.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				miControlador.directorInfomes();
+			}
+		});
 		btnInformes.setBackground(new Color(220, 20, 60));
 		btnInformes.setBounds(297, 233, 152, 111);
 		panel_1.add(btnInformes);

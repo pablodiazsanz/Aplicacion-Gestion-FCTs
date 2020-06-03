@@ -24,6 +24,8 @@ import Aplicacion.Controlador;
 import Aplicacion.Modelo;
 import Aplicacion.Vistas;
 import javax.swing.JScrollPane;
+import javax.swing.JComboBox;
+import javax.swing.DefaultComboBoxModel;
 
 public class dirAlumnos extends JFrame implements Vistas{
 
@@ -39,6 +41,7 @@ public class dirAlumnos extends JFrame implements Vistas{
 	private JButton btnBuscar;
 	private JTable table;
 	private JScrollPane scrollPane;
+	private JComboBox comboBox;
 	
 	public void setControlador(Controlador miControlador) {
 		this.miControlador = miControlador;
@@ -148,9 +151,24 @@ public class dirAlumnos extends JFrame implements Vistas{
 		
 		scrollPane.setViewportView(table);
 		
+		comboBox = new JComboBox();
+		comboBox.setModel(new DefaultComboBoxModel(new String[] {"2019/2020", "2018/2019", "2017/2018"}));
+		comboBox.setBounds(32, 211, 121, 36);
+		panel.add(comboBox);
+		
+		JButton btnNewButton = new JButton("");
+		btnNewButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				miControlador.tablaAlumnoTutor();
+			}
+		});
+		btnNewButton.setIcon(new ImageIcon(dirAlumnos.class.getResource("/img/icons8-actualizar-30.png")));
+		btnNewButton.setBounds(154, 211, 40, 36);
+		panel.add(btnNewButton);
+		
 		addWindowListener(new WindowAdapter() {
 			public void windowActivated(WindowEvent e) {
-				table.setModel(miModelo.getTablaDirAlumnos());
+				miControlador.tablaAlumnoTutor();
 			}
 		});
 	}
@@ -158,5 +176,21 @@ public class dirAlumnos extends JFrame implements Vistas{
 	public void nombre() {
 		String nombre = miModelo.getNombre();
 		lblUsuario.setText("Usuario: " + nombre);
+	}
+	
+	public String getEleccion() {
+		String item = (String) comboBox.getSelectedItem();
+		if (item.equals("2019/2020")) {
+			return "2019";
+		} else if (item.equals("2018/2019")) {
+			return "2018";
+		} else if (item.equals("2017/2018")) {
+			return "2017";
+		}
+		return null;	
+	}
+
+	public void actualizar() {
+		table.setModel(miModelo.getTablaDirAlumnos());
 	}
 }

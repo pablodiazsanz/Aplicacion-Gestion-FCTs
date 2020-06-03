@@ -11,6 +11,7 @@ import Vistas.dirAlumnosEdA;
 import Vistas.dirAlumnosEdE;
 import Vistas.dirGrupos;
 import Vistas.dirGruposB;
+import Vistas.dirInformes;
 import Vistas.dirTutores;
 import Vistas.dirTutoresA;
 import Vistas.dirTutoresB;
@@ -64,6 +65,7 @@ public class Controlador {
 	private dirEmpresasM dirEmpresasM;
 	private dirGrupos dirGrupos;
 	private dirGruposB dirGruposB;
+	private dirInformes dirInformes;
 	private dirTutores dirTutores;
 	private dirTutoresA dirTutoresA;
 	private dirTutoresB dirTutoresB;
@@ -162,6 +164,10 @@ public class Controlador {
 
 	public void setDirGruposB(dirGruposB dirGruposB) {
 		this.dirGruposB = dirGruposB;
+	}
+	
+	public void setDirInformes(dirInformes dirInformes) {
+		this.dirInformes = dirInformes;
 	}
 
 	public void setDirTutores(dirTutores dirTutores) {
@@ -336,14 +342,20 @@ public class Controlador {
 		dirAlumnos.setVisible(true);
 		ventanaActiva = dirAlumnos;
 	}
+	
+	public void directorInfomes() {
+		miModelo.informes();
+		ventanaActiva.setVisible(false);
+		dirInformes.setVisible(true);
+		ventanaActiva = dirInformes;
+	}
+
 
 
 	public void directorAlumnoBuscar() {
 		ventanaActiva.setVisible(false);
 		dirAlumnosB.setVisible(true);
 		ventanaActiva =dirAlumnosB;
-
-
 	}
 
 	public void directorAlumnoEditar() {
@@ -548,18 +560,30 @@ public class Controlador {
 		ventanaActiva = tutGruposB;
 	}
 	
+	/*
+	 * Con este método llamamos al modelo para conectarnos con la base de datos
+	 */
 	public void actualizarBD() {
 		miModelo.actualizarBD(configLogin.getUserBD(), configLogin.getPasswdBD(), configLogin.getUrlBD());
 	}
 
+	/*
+	 * Con este método llamamos al modelo para comprobar en la verificacion los datos
+	 */
 	public void comprobarVerificacion() {
 		miModelo.comprobarVerificacionCuenta(verificacion.getRdButton(), verificacion.getCodVerificacion());
 	}
 	
+	/*
+	 * Con este método llamamos al modelo para comprobar los datos para acceder al login
+	 */
 	public void accesoLogin() {
 		miModelo.iniciarSesion(login.getUsr(), login.getPwd());
 	}
 
+	/*
+	 * Con estos métodos vamos a insertar, modificar y eliminar los alumnos y empresas
+	 */
 	public void insertarUsuario() {
 		miModelo.insertarNuevoUsuario(crearCuenta.getNombreUsuario(), crearCuenta.getPasswd(), verificacion.getRdButton());
 	}
@@ -616,5 +640,8 @@ public class Controlador {
 		miModelo.tutorModificarAlumno(tutAlumnosEdM.getTxtModificacion(), tutAlumnosEdM.getEleccion(), tutAlumnosEdM.getTxtExpediente());
 	}
 	
+	public void tablaAlumnoTutor() {
+		miModelo.setTablaAlumnos(dirAlumnos.getEleccion());
+	}
 	
 }

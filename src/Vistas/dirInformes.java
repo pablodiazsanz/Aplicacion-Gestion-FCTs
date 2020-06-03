@@ -41,6 +41,12 @@ public class dirInformes extends JFrame implements Vistas {
 	private JScrollPane scrollPane;
 	private JButton btnMostrar;
 	private final ButtonGroup buttonGroup = new ButtonGroup();
+	private JRadioButton rdbtnAT;
+	private JRadioButton rdbtnAE;
+	private JRadioButton rdbtnTC;
+	private JRadioButton rdbtnAPT;
+	private JRadioButton rdbtnIA;
+	private JRadioButton rdbtnIP;
 
 	public void setControlador(Controlador miControlador) {
 		this.miControlador = miControlador;
@@ -103,7 +109,7 @@ public class dirInformes extends JFrame implements Vistas {
 		btnMostrar = new JButton("Mostrar");
 		btnMostrar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				miControlador.directorGruposBuscar();
+				actualizarTabla();
 			}
 		});
 		btnMostrar.setIcon(new ImageIcon(dirInformes.class.getResource("/img/buscar.png")));
@@ -118,38 +124,38 @@ public class dirInformes extends JFrame implements Vistas {
 		table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 
 		scrollPane.setViewportView(table);
-		
-		JRadioButton rdbtnAT = new JRadioButton("Alumnos por Tutor");
+
+		rdbtnAT = new JRadioButton("Alumnos por Tutor");
 		buttonGroup.add(rdbtnAT);
 		rdbtnAT.setForeground(Color.WHITE);
 		rdbtnAT.setBounds(57, 120, 151, 23);
 		panel.add(rdbtnAT);
-		
-		JRadioButton rdbtnAE = new JRadioButton("Alumnos por Empresa");
+
+		rdbtnAE = new JRadioButton("Alumnos por Empresa");
 		buttonGroup.add(rdbtnAE);
 		rdbtnAE.setForeground(Color.WHITE);
 		rdbtnAE.setBounds(373, 120, 175, 23);
 		panel.add(rdbtnAE);
-		
-		JRadioButton rdbtnTC = new JRadioButton("Tutores por Ciclo");
+
+		rdbtnTC = new JRadioButton("Tutores por Ciclo");
 		buttonGroup.add(rdbtnTC);
 		rdbtnTC.setForeground(Color.WHITE);
 		rdbtnTC.setBounds(220, 120, 141, 23);
 		panel.add(rdbtnTC);
-		
-		JRadioButton rdbtnAPT = new JRadioButton("Alumnos en practicas por Tutor");
+
+		rdbtnAPT = new JRadioButton("Alumnos en practicas por Tutor");
 		buttonGroup.add(rdbtnAPT);
 		rdbtnAPT.setForeground(Color.WHITE);
 		rdbtnAPT.setBounds(560, 120, 231, 23);
 		panel.add(rdbtnAPT);
-		
-		JRadioButton rdbtnIA = new JRadioButton("Informe que piden las aseguradoras");
+
+		rdbtnIA = new JRadioButton("Informe que piden las aseguradoras");
 		buttonGroup.add(rdbtnIA);
 		rdbtnIA.setForeground(Color.WHITE);
 		rdbtnIA.setBounds(392, 155, 257, 23);
 		panel.add(rdbtnIA);
-		
-		JRadioButton rdbtnIP = new JRadioButton("Informe general para la gestion de las practicas");
+
+		rdbtnIP = new JRadioButton("Informe general para la gestion de las practicas");
 		buttonGroup.add(rdbtnIP);
 		rdbtnIP.setForeground(Color.WHITE);
 		rdbtnIP.setBounds(56, 155, 330, 23);
@@ -157,13 +163,31 @@ public class dirInformes extends JFrame implements Vistas {
 
 		addWindowListener(new WindowAdapter() {
 			public void windowActivated(WindowEvent e) {
-				table.setModel(miModelo.getTablaDirGrupos());
 			}
 		});
 	}
-	
+
 	public void nombre() {
 		String nombre = miModelo.getNombre();
 		lblUsuario.setText("Usuario: " + nombre);
+	}
+
+	/*
+	 * Con este método vamos cambiando el informe que queremos mostrar
+	 */
+	public void actualizarTabla() {
+		if (rdbtnAT.isSelected()) {
+			table.setModel(miModelo.getTablaAlumnosTutor());
+		} else if (rdbtnTC.isSelected()) {
+			table.setModel(miModelo.getTablaTutoresCiclo());
+		} else if (rdbtnAE.isSelected()) {
+			table.setModel(miModelo.getTablaAlumnosEmpresa());
+		} else if (rdbtnAPT.isSelected()) {
+			table.setModel(miModelo.getTablaAlumnosPracticasTutor());
+		} else if (rdbtnIP.isSelected()) {
+			table.setModel(miModelo.getTablaInformePracticas());
+		} else if (rdbtnIA.isSelected()) {
+			table.setModel(miModelo.getTablaInformeAseguradoras());
+		}
 	}
 }

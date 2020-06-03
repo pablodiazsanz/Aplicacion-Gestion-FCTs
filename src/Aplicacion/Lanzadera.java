@@ -15,6 +15,7 @@ import Vistas.dirEmpresasE;
 import Vistas.dirEmpresasM;
 import Vistas.dirGrupos;
 import Vistas.dirGruposB;
+import Vistas.dirInformes;
 import Vistas.dirTutores;
 import Vistas.dirTutoresA;
 import Vistas.dirTutoresB;
@@ -64,6 +65,7 @@ public class Lanzadera {
 		dirEmpresasM dirEmpresasM = new dirEmpresasM();
 		dirGrupos dirGrupos = new dirGrupos();
 		dirGruposB dirGruposB = new dirGruposB();
+		dirInformes dirInformes = new dirInformes();
 		dirTutores dirTutores = new dirTutores();
 		dirTutoresA dirTutoresA = new dirTutoresA();
 		dirTutoresB dirTutoresB = new dirTutoresB();
@@ -109,6 +111,7 @@ public class Lanzadera {
 		miControlador.setDirEmpresasM(dirEmpresasM);
 		miControlador.setDirGrupos(dirGrupos);
 		miControlador.setDirGruposB(dirGruposB);
+		miControlador.setDirInformes(dirInformes);
 		miControlador.setDirTutores(dirTutores);
 		miControlador.setDirTutoresA(dirTutoresA);
 		miControlador.setDirTutoresB(dirTutoresB);
@@ -154,6 +157,7 @@ public class Lanzadera {
 		miModelo.setDirEmpresasM(dirEmpresasM);
 		miModelo.setDirGrupos(dirGrupos);
 		miModelo.setDirGruposB(dirGruposB);
+		miModelo.setDirInformes(dirInformes);
 		miModelo.setDirTutores(dirTutores);
 		miModelo.setDirTutoresA(dirTutoresA);
 		miModelo.setDirTutoresB(dirTutoresB);
@@ -231,6 +235,9 @@ public class Lanzadera {
 		
 		dirGruposB.setControlador(miControlador);
 		dirGruposB.setModelo(miModelo);
+		
+		dirInformes.setControlador(miControlador);
+		dirInformes.setModelo(miModelo);
 		
 		dirTutores.setControlador(miControlador);
 		dirTutores.setModelo(miModelo);
