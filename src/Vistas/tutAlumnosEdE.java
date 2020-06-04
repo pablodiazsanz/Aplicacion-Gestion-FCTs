@@ -139,7 +139,6 @@ public class tutAlumnosEdE extends JFrame implements Vistas{
 		JButton btnAnexos = new JButton("Anexos");
 		btnAnexos.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				miControlador.tutorAlumnosAnexos();
 			}
 		});
 		btnAnexos.setIcon(new ImageIcon(tutAlumnos.class.getResource("/img/anexo.png")));
@@ -223,6 +222,15 @@ public class tutAlumnosEdE extends JFrame implements Vistas{
 	}
 
 	public void actualizar() {
-		miControlador.tutorAlumnosEditar();
+		String resultado = miModelo.getResultado();
+		if (resultado.equals("Correcto")) {
+			miControlador.tutorAlumnosEditar();
+			lblInfo.setText("Introduzca los Datos");
+			lblIncorrecto.setText("");
+		}
+		else {
+			lblInfo.setText("");
+			lblIncorrecto.setText("Algun dato es incorrecto. Vuelva a intentarlo.");
+		}
 	}
 }

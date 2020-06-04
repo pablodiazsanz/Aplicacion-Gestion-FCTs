@@ -18,7 +18,6 @@ import Vistas.configLogin;
 import Vistas.crearCuenta;
 import Vistas.datosTutEmp;
 import Vistas.dirAlumnos;
-import Vistas.dirAlumnosA;
 import Vistas.dirAlumnosB;
 import Vistas.dirAlumnosEd;
 import Vistas.dirAlumnosEdA;
@@ -31,6 +30,7 @@ import Vistas.dirEmpresasE;
 import Vistas.dirEmpresasM;
 import Vistas.dirGrupos;
 import Vistas.dirGruposB;
+import Vistas.dirInformes;
 import Vistas.dirTutores;
 import Vistas.dirTutoresA;
 import Vistas.dirTutoresB;
@@ -44,7 +44,6 @@ import Vistas.empTutoresB;
 import Vistas.empresa;
 import Vistas.login;
 import Vistas.tutAlumnos;
-import Vistas.tutAlumnosA;
 import Vistas.tutAlumnosB;
 import Vistas.tutAlumnosEd;
 import Vistas.tutAlumnosEdA;
@@ -65,7 +64,6 @@ public class Modelo {
 	private crearCuenta crearCuenta;
 	private datosTutEmp datosTutEmp;
 	private dirAlumnos dirAlumnos;
-	private dirAlumnosA dirAlumnosA;
 	private dirAlumnosB dirAlumnosB;
 	private dirAlumnosEd dirAlumnosEd;
 	private dirAlumnosEdA dirAlumnosEdA;
@@ -79,6 +77,7 @@ public class Modelo {
 	private dirEmpresasM dirEmpresasM;
 	private dirGrupos dirGrupos;
 	private dirGruposB dirGruposB;
+	private dirInformes dirInformes;
 	private dirTutores dirTutores;
 	private dirTutoresA dirTutoresA;
 	private dirTutoresB dirTutoresB;
@@ -91,7 +90,6 @@ public class Modelo {
 	private empTutoresB empTutoresB;
 	private login login;
 	private tutAlumnos tutAlumnos;
-	private tutAlumnosA tutAlumnosA;
 	private tutAlumnosB tutAlumnosB;
 	private tutAlumnosEd tutAlumnosEd;
 	private tutAlumnosEdA tutAlumnosEdA;
@@ -113,7 +111,6 @@ public class Modelo {
 	private final String loginBD = "loginBD.ini";
 	private String user;
 	private String passwd;
-	private String db = "ProyectoIntegrador";
 	private String url;
 	private Connection conexion;
 	private String resultado;
@@ -137,6 +134,19 @@ public class Modelo {
 	private DefaultTableModel tablaTutGrupos;
 	private String sqlEmpTutores;
 	private DefaultTableModel tablaEmpTutores;
+	private String sqlAlumnosTutor;
+	private DefaultTableModel tablaAlumnosTutor;
+	private String sqlTutoresCiclo;
+	private DefaultTableModel tablaTutoresCiclo;
+	private String sqlAlumnosEmpresa;
+	private DefaultTableModel tablaAlumnosEmpresa;
+	private String sqlAlumnosPracticasTutor;
+	private DefaultTableModel tablaAlumnosPracticasTutor;
+	private String sqlInformePracticas;
+	private DefaultTableModel tablaInformePracticas;
+	private String sqlInformeAseguradoras;
+	private DefaultTableModel tablaInformeAseguradoras;
+	private String anaca = "2019";
 
 	public void setConfigLogin(configLogin configLogin) {
 		this.configLogin = configLogin;
@@ -152,10 +162,6 @@ public class Modelo {
 
 	public void setDirAlumnos(dirAlumnos dirAlumnos) {
 		this.dirAlumnos = dirAlumnos;
-	}
-
-	public void setDirAlumnosA(dirAlumnosA dirAlumnosA) {
-		this.dirAlumnosA = dirAlumnosA;
 	}
 
 	public void setDirAlumnosB(dirAlumnosB dirAlumnosB) {
@@ -210,6 +216,10 @@ public class Modelo {
 		this.dirGruposB = dirGruposB;
 	}
 
+	public void setDirInformes(dirInformes dirInformes) {
+		this.dirInformes = dirInformes;
+	}
+
 	public void setDirTutores(dirTutores dirTutores) {
 		this.dirTutores = dirTutores;
 	}
@@ -256,10 +266,6 @@ public class Modelo {
 
 	public void setTutAlumnos(tutAlumnos tutAlumnos) {
 		this.tutAlumnos = tutAlumnos;
-	}
-
-	public void setTutAlumnosA(tutAlumnosA tutAlumnosA) {
-		this.tutAlumnosA = tutAlumnosA;
 	}
 
 	public void setTutAlumnosB(tutAlumnosB tutAlumnosB) {
@@ -318,10 +324,13 @@ public class Modelo {
 		this.verificacion = verificacion;
 	}
 
+	/*
+	 * Este método carga el driver para la conexión a mySQL.
+	 */
 	public Modelo() {
 		try {
 			// Este sirve para Oracle
-			Class.forName("oracle.jdbc.driver.OracleDriver");
+			// Class.forName("oracle.jdbc.driver.OracleDriver");
 			// Este sirve para MySQL
 			Class.forName("com.mysql.cj.jdbc.Driver");
 			cargarFicheroBD();
@@ -334,6 +343,9 @@ public class Modelo {
 		}
 	}
 
+	/*
+	 * Este método carga el fichero loginBD.ini para la conexión de datos.
+	 */
 	public void cargarFicheroBD() {
 		datosBD = new Properties();
 		try {
@@ -354,6 +366,9 @@ public class Modelo {
 		}
 	}
 
+	/*
+	 * Con este método nos conectamos a la base de datos.
+	 */
 	public void loginBD() {
 		try {
 			conexion = DriverManager.getConnection(url, user, passwd);
@@ -363,6 +378,10 @@ public class Modelo {
 		}
 	}
 
+	/*
+	 * Con este método cogemos los datos del fichero .ini y los cargamos para
+	 * establecer la conexión.
+	 */
 	public void actualizarBD(String usuarioBD, String passwdBD, String urlBD) {
 		miFichero.delete();
 		try {
@@ -390,17 +409,9 @@ public class Modelo {
 		return url;
 	}
 
-	public void tablas() {
-		tablaDirAlumnos = cargarTabla(sqlDirAlumnos);
-		tablaDirTutores = cargarTabla(sqlDirTutores);
-		tablaDirEmpresas = cargarTabla(sqlDirEmpresas);
-		tablaDirGrupos = cargarTabla(sqlDirGrupos);
-		tablaTutEmpAlumnos = cargarTabla(sqlTutEmpAlumnos);
-		tablaTutEmpresas = cargarTabla(sqlTutEmpresas);
-		tablaTutGrupos = cargarTabla(sqlTutGrupos);
-		tablaEmpTutores = cargarTabla(sqlEmpTutores);
-	}
-
+	/*
+	 * Con este método terminamos la conexión a la base de datos.
+	 */
 	public void terminar() {
 		try {
 			if (conexion != null)
@@ -411,6 +422,10 @@ public class Modelo {
 		}
 	}
 
+	/*
+	 * Con este método validamos el usuario y la contraseña para poder iniciar
+	 * sesion en la aplicacion
+	 */
 	public void iniciarSesion(String usr, String pwd) {
 		String query = "SELECT * FROM ProyectoIntegrador.Users WHERE usr=? AND pwd=?";
 		try {
@@ -445,6 +460,10 @@ public class Modelo {
 		return this.resultado;
 	}
 
+	/*
+	 * Con este método escogemos el rol para iniciar sesion cómo tutor, director o
+	 * empresa.
+	 */
 	public void elegirRol(String usr, String pwd) {
 		String query = "SELECT rol FROM ProyectoIntegrador.Users WHERE usr=? AND pwd=?";
 		try {
@@ -463,6 +482,10 @@ public class Modelo {
 		return this.rol;
 	}
 
+	/*
+	 * Con este método ponemos el nombre a cada usuario cuando accede e inicia
+	 * sesión.
+	 */
 	public void nomUsuario(String usr) {
 		String query = "SELECT CONCAT(nombre, ' ', apellido) FROM ProyectoIntegrador.Tutor WHERE users_usr=?";
 		try {
@@ -474,7 +497,6 @@ public class Modelo {
 				if (rol.equals("director")) {
 					director.nombre();
 					dirAlumnos.nombre();
-					dirAlumnosA.nombre();
 					dirAlumnosB.nombre();
 					dirAlumnosEd.nombre();
 					dirAlumnosEdA.nombre();
@@ -492,11 +514,9 @@ public class Modelo {
 					dirTutoresB.nombre();
 					dirTutoresE.nombre();
 					dirTutoresM.nombre();
-				} 
-				else if (rol.equals("tutor")) {
+				} else if (rol.equals("tutor")) {
 					tutor.nombre();
 					tutAlumnos.nombre();
-					tutAlumnosA.nombre();
 					tutAlumnosB.nombre();
 					tutAlumnosEd.nombre();
 					tutAlumnosEdA.nombre();
@@ -528,6 +548,9 @@ public class Modelo {
 		return this.nombre;
 	}
 
+	/*
+	 * Con este método hemos cargado las tablas.
+	 */
 	public DefaultTableModel cargarTabla(String script) {
 		tabla = new DefaultTableModel();
 		int numColumnas = getNumColumnas(script);
@@ -565,8 +588,39 @@ public class Modelo {
 		return num;
 	}
 
+	public void tablas() {
+		tablaDirAlumnos = cargarTabla(sqlDirAlumnos);
+		tablaDirTutores = cargarTabla(sqlDirTutores);
+		tablaDirEmpresas = cargarTabla(sqlDirEmpresas);
+		tablaDirGrupos = cargarTabla(sqlDirGrupos);
+		tablaTutEmpAlumnos = cargarTabla(sqlTutEmpAlumnos);
+		tablaTutEmpresas = cargarTabla(sqlTutEmpresas);
+		tablaTutGrupos = cargarTabla(sqlTutGrupos);
+		tablaEmpTutores = cargarTabla(sqlEmpTutores);
+		System.out.println("Tablas cargadas");
+	}
+
+	public void informes() {
+		tablaAlumnosTutor = cargarTabla(sqlAlumnosTutor);
+		tablaTutoresCiclo = cargarTabla(sqlTutoresCiclo);
+		tablaAlumnosEmpresa = cargarTabla(sqlAlumnosEmpresa);
+		tablaAlumnosPracticasTutor = cargarTabla(sqlAlumnosPracticasTutor);
+		tablaInformePracticas = cargarTabla(sqlInformePracticas);
+		tablaInformeAseguradoras = cargarTabla(sqlInformeAseguradoras);
+		System.out.println("Informes cargados");
+	}
+
+	public void ejecutarScriptsAA(String anaca) {
+		this.sqlDirAlumnos = "SELECT A.* FROM Alumno A, Pertenece P WHERE A.expediente = P.alumno_expediente AND año_academico = '"
+				+ anaca + "'";
+	}
+
+	/*
+	 * Estas son las query que ejecutamos para cargar las tablas
+	 */
 	public void ejecutarScripts(String usr) {
-		this.sqlDirAlumnos = "SELECT * FROM ProyectoIntegrador.Alumno";
+		this.sqlDirAlumnos = "SELECT A.* FROM Alumno A, Pertenece P WHERE A.expediente = P.alumno_expediente AND año_academico = '"
+				+ anaca + "'";
 		this.sqlDirEmpresas = "SELECT * FROM ProyectoIntegrador.Empresa";
 		this.sqlDirGrupos = "SELECT * FROM ProyectoIntegrador.Grupo";
 		this.sqlDirTutores = "SELECT * FROM ProyectoIntegrador.Tutor";
@@ -590,6 +644,49 @@ public class Modelo {
 				+ "LEFT JOIN Tutor \n" + "ON ProyectoIntegrador.Gestiona.tutor_dni = ProyectoIntegrador.Tutor.dni \n"
 				+ "WHERE Tutor.users_usr='" + usr + "'";
 		this.sqlEmpTutores = "SELECT * FROM ProyectoIntegrador.Tutor WHERE users_usr='" + usr + "'";
+		this.sqlAlumnosTutor = "SELECT Pe.año_academico 'Año', CONCAT(T.nombre, T.apellido) 'Tutor',"
+				+ " nombre_ciclo 'Ciclo', CONCAT( A.nombre, CONCAT(' ', A.apellido)) 'Alumno',"
+				+ " E.nombre 'Empresa', anexo_2_1 'Anexo 2.1',anexo_3 'Anexo 3',\n"
+				+ "anexo_7 'Anexo 7',anexo_8 'Anexo 8'\n"
+				+ "FROM Alumno A, Gestiona Ge ,Tutor T, Empresa E, Practica P, Grupo G, Pertenece Pe\n"
+				+ "WHERE E.CIF = P.empresa_cif AND A.expediente = P.alumno_expediente AND T.dni = Ge.tutor_dni \n"
+				+ "AND G.cod_grupo = Ge.grupo_cod_grupo AND A.expediente = Pe.año_academico AND Pe.grupo_cod_grupo = G.cod_grupo";
+		this.sqlTutoresCiclo = "SELECT Ge.año_academico 'Año', nombre_ciclo 'Ciclo',T.dni 'DNI', T.nombre 'Nombre', T.apellido 'Apellidos', C.localidad 'Centro', G.cod_grupo 'Grupo' \n"
+				+ "FROM Centro C, Gestiona Ge, Tutor T, Grupo G \n"
+				+ "WHERE T.dni = Ge.tutor_dni AND G.cod_grupo = Ge.grupo_cod_grupo AND C.cod_centro = T.centro_cod_centro ";
+		this.sqlAlumnosEmpresa = "SELECT Pe.año_academico 'Año', Co.numconv 'Nº Convenio', E.nombre 'Empresa',"
+				+ " A.dni 'DNI', CONCAT (A.nombre, CONCAT(' ', A.apellido)) 'Alumno', G.cod_grupo 'Grupo',"
+				+ " CONCAT(T.nombre, CONCAT(' ', T.apellido)) 'Tutor C.', P.TutorE 'Tutor E.' \n"
+				+ "FROM Gestiona Ge, Colabora Co, Empresa E, Alumno A, Grupo G, Tutor T, Practica P, Pertenece Pe \n"
+				+ "WHERE T.dni = Ge.tutor_dni AND G.cod_grupo = Ge.grupo_cod_grupo AND A.expediente = Pe.año_academico AND"
+				+ " Pe.grupo_cod_grupo = G.cod_grupo AND E.cif = Co.empresa_cif AND Co.centro_cod_centro = T.centro_cod_centro AND"
+				+ " P.alumno_expediente = A.expediente";
+		this.sqlAlumnosPracticasTutor = "SELECT Ge.año_academico 'Año', CONCAT( T.nombre, CONCAT(' ', T.apellido)) 'Tutor C.',"
+				+ " G.nombre_ciclo 'Ciclo', CONCAT(A.nombre, CONCAT(' ', A.apellido)) 'Alumno', E.nombre 'Empresa',"
+				+ " Co.numconv 'Nº Convenio',P.fecha_ini 'Fecha Inicio', P.fecha_fin 'Fecha Fin', P.horario 'Horario',"
+				+ " P.TutorE 'Tutor E.' \n"
+				+ "FROM Gestiona Ge, Colabora Co, Empresa E, Alumno A, Grupo G, Tutor T, Practica P, Pertenece Pe\n"
+				+ "WHERE E.CIF = P.empresa_cif AND A.expediente = P.alumno_expediente AND A.expediente = Pe.año_academico AND"
+				+ " Pe.grupo_cod_grupo = G.cod_grupo AND E.cif = Co.empresa_cif AND T.dni = Ge.tutor_dni AND"
+				+ " G.cod_grupo = Ge.grupo_cod_grupo";
+		this.sqlInformePracticas = "SELECT Ge.año_academico 'Año', A.expediente 'Exp.', CONCAT(A.nombre, "
+				+ "CONCAT(' ', A.apellido)) 'Alumno', G.cod_grupo 'Grupo',  E.nombre 'Empresa', E.Localidad 'Provincia',"
+				+ " E.responsable_empresa 'Resp. E.', P.TutorE 'Tutor E.', E.telefono 'Tlf', CONCAT(P.fecha_ini,"
+				+ " CONCAT(' - ', P.fecha_fin)) 'F. Ini-Fin', CONCAT( T.nombre, CONCAT(' ', T.apellido)) 'Tutor C.',"
+				+ " E.email 'Email' \n"
+				+ "FROM Gestiona Ge, Colabora Co, Empresa E, Alumno A, Grupo G, Tutor T, Practica P, Pertenece Pe\n"
+				+ "WHERE E.CIF = P.empresa_cif AND A.expediente = P.alumno_expediente AND A.expediente = Pe.año_academico "
+				+ "AND Pe.grupo_cod_grupo = G.cod_grupo AND E.cif = Co.empresa_cif AND T.dni = Ge.tutor_dni AND"
+				+ " G.cod_grupo = Ge.grupo_cod_grupo";
+		this.sqlInformeAseguradoras = "SELECT Ge.año_academico 'Año', A.expediente 'Exp.', "
+				+ "CONCAT(A.nombre, CONCAT(' ', A.apellido)) 'Alumno', G.nombre_ciclo 'Ciclo',  "
+				+ "A.dni 'DNI', E.Localidad 'Localidad', E.nombre 'Empresa', A.nacionalidad "
+				+ "'Nacional.', YEAR(CURDATE())-YEAR(A.fecha_nacimiento) + IF(DATE_FORMAT(CURDATE(),'%m-%d') > DATE_FORMAT(A.fecha_nacimiento,'%m-%d'), 0 , -1 ) 'Edad',"
+				+ " CONCAT(P.fecha_ini, CONCAT(' - ', P.fecha_fin)) 'Periodo' \n"
+				+ "FROM Gestiona Ge, Colabora Co, Empresa E, Alumno A, Grupo G, Tutor T, Practica P, Pertenece Pe\n"
+				+ "WHERE E.CIF = P.empresa_cif AND A.expediente = P.alumno_expediente AND A.expediente = Pe.año_academico "
+				+ "AND Pe.grupo_cod_grupo = G.cod_grupo AND E.cif = Co.empresa_cif AND T.dni = Ge.tutor_dni AND G.cod_grupo = Ge.grupo_cod_grupo\n"
+				+ "";
 	}
 
 	public DefaultTableModel getTablaDirAlumnos() {
@@ -620,10 +717,37 @@ public class Modelo {
 		return tablaTutGrupos;
 	}
 
+	public DefaultTableModel getTablaAlumnosTutor() {
+		return tablaAlumnosTutor;
+	}
+
 	public DefaultTableModel getTablaEmpTutores() {
 		return tablaEmpTutores;
 	}
 
+	public DefaultTableModel getTablaTutoresCiclo() {
+		return tablaTutoresCiclo;
+	}
+
+	public DefaultTableModel getTablaAlumnosEmpresa() {
+		return tablaAlumnosEmpresa;
+	}
+
+	public DefaultTableModel getTablaAlumnosPracticasTutor() {
+		return tablaAlumnosPracticasTutor;
+	}
+
+	public DefaultTableModel getTablaInformePracticas() {
+		return tablaInformePracticas;
+	}
+
+	public DefaultTableModel getTablaInformeAseguradoras() {
+		return tablaInformeAseguradoras;
+	}
+
+	/*
+	 * Con este método verificamos para poder crear una cuenta
+	 */
 	public void comprobarVerificacionCuenta(String rol, String cod) {
 		try {
 			if (rol.equals("tutor") && cod.equals("tutor123") || rol.equals("empresa") && cod.equals("empresa123")) {
@@ -643,6 +767,9 @@ public class Modelo {
 		verificacion.actualizar();
 	}
 
+	/*
+	 * Con estos métodos siguientes
+	 */
 	public void insertarNuevoUsuario(String usr, String pwd, String rol) {
 		String query = "INSERT INTO ProyectoIntegrador.Users (usr, pwd, rol) VALUES (?, ?, ?)";
 		try {
@@ -655,6 +782,7 @@ public class Modelo {
 			stmt.setString(3, rol);
 			stmt.executeUpdate();
 			System.out.println("Se ha insertado el usuario correctamente");
+
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -673,6 +801,7 @@ public class Modelo {
 			stmt.setString(5, usr);
 			stmt.executeUpdate();
 			System.out.println("Se ha insertado el tutor correctamente");
+
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -693,18 +822,20 @@ public class Modelo {
 			stmtAlumno.setString(6, txtNacionalidad);
 			stmtAlumno.executeUpdate();
 			System.out.println("Se ha insertado el alumno correctamente");
-			
+
 			PreparedStatement stmtPertenece = conexion.prepareStatement(pertenece);
 			stmtPertenece.setString(1, txtNumExpediente);
 			stmtPertenece.setString(2, txtCodGrupo);
 			stmtPertenece.setString(3, txtAnoAcademico);
 			stmtPertenece.executeUpdate();
 			System.out.println("Se ha insertado el alumno en el grupo");
+			resultado = "Correcto";
 			tablas();
 		} catch (SQLException e) {
+			resultado = "Incorrecto";
 			e.printStackTrace();
 		}
-		
+
 		tutAlumnosEdA.actualizar();
 	}
 
@@ -722,11 +853,13 @@ public class Modelo {
 			stmt.setString(7, txtResponsableEmpresa);
 			stmt.executeUpdate();
 			System.out.println("Se ha insertado la empresa correctamente");
+			resultado = "Correcto";
 			tablas();
 		} catch (SQLException e) {
+			resultado = "Incorrecto";
 			e.printStackTrace();
 		}
-		tutEmpresasA.actualizar();		
+		tutEmpresasA.actualizar();
 	}
 
 	public void directorInsertarAlumno(String txtNumExpediente, String txtDNI, String txtNombre, String txtApellidos,
@@ -743,20 +876,22 @@ public class Modelo {
 			stmtAlumno.setString(6, txtNacionalidad);
 			stmtAlumno.executeUpdate();
 			System.out.println("Se ha insertado el alumno correctamente");
-			
+
 			PreparedStatement stmtPertenece = conexion.prepareStatement(pertenece);
 			stmtPertenece.setString(1, txtNumExpediente);
 			stmtPertenece.setString(2, txtCodGrupo);
 			stmtPertenece.setString(3, txtAnoAcademico);
 			stmtPertenece.executeUpdate();
 			System.out.println("Se ha insertado el alumno en el grupo");
+			resultado = "Correcto";
 			tablas();
 		} catch (SQLException e) {
+			resultado = "Incorrecto";
 			e.printStackTrace();
 		}
-		
+
 		dirAlumnosEdA.actualizar();
-		
+
 	}
 
 	public void directorInsertarEmpresa(String txtNombre, String txtCIF, String txtDireccion, String txtLocalidad,
@@ -773,11 +908,13 @@ public class Modelo {
 			stmt.setString(7, txtResponsableEmpresa);
 			stmt.executeUpdate();
 			System.out.println("Se ha insertado la empresa correctamente");
+			resultado = "Correcto";
 			tablas();
 		} catch (SQLException e) {
+			resultado = "Incorrecto";
 			e.printStackTrace();
 		}
-		dirEmpresasA.actualizar();			
+		dirEmpresasA.actualizar();
 	}
 
 	public void directorBorrarAlumno(String txtNombre, String txtId) {
@@ -793,8 +930,10 @@ public class Modelo {
 			stmtAlumno.setString(2, txtId);
 			stmtAlumno.executeUpdate();
 			System.out.println("Se ha borrado el alumno de la tabla ALUMNO correctamente");
+			resultado = "Correcto";
 			tablas();
 		} catch (SQLException e) {
+			resultado = "Incorrecto";
 			e.printStackTrace();
 		}
 		dirAlumnosEdE.actualizar();
@@ -813,8 +952,10 @@ public class Modelo {
 			stmtAlumno.setString(2, txtId);
 			stmtAlumno.executeUpdate();
 			System.out.println("Se ha borrado el alumno de la tabla ALUMNO correctamente");
+			resultado = "Correcto";
 			tablas();
 		} catch (SQLException e) {
+			resultado = "Incorrecto";
 			e.printStackTrace();
 		}
 		tutAlumnosEdE.actualizar();
@@ -828,8 +969,10 @@ public class Modelo {
 			stmt.setString(2, txtCIF);
 			stmt.executeUpdate();
 			System.out.println("Se ha borrado la empresa correctamente");
+			resultado = "Correcto";
 			tablas();
 		} catch (SQLException e) {
+			resultado = "Incorrecto";
 			e.printStackTrace();
 		}
 		dirEmpresasE.actualizar();
@@ -843,8 +986,10 @@ public class Modelo {
 			stmt.setString(2, txtCIF);
 			stmt.executeUpdate();
 			System.out.println("Se ha borrado la empresa correctamente");
+			resultado = "Correcto";
 			tablas();
 		} catch (SQLException e) {
+			resultado = "Incorrecto";
 			e.printStackTrace();
 		}
 		tutEmpresasE.actualizar();
@@ -858,8 +1003,10 @@ public class Modelo {
 			stmt.setString(2, txtExpediente);
 			stmt.executeUpdate();
 			System.out.println("Se ha modificado el alumno correctamente");
+			resultado = "Correcto";
 			tablas();
 		} catch (SQLException e) {
+			resultado = "Incorrecto";
 			e.printStackTrace();
 		}
 		dirAlumnosEdM.actualizar();
@@ -873,8 +1020,10 @@ public class Modelo {
 			stmt.setString(2, txtCIF);
 			stmt.executeUpdate();
 			System.out.println("Se ha modificado la empresa correctamente");
+			resultado = "Correcto";
 			tablas();
 		} catch (SQLException e) {
+			resultado = "Incorrecto";
 			e.printStackTrace();
 		}
 		dirEmpresasM.actualizar();
@@ -888,8 +1037,10 @@ public class Modelo {
 			stmt.setString(2, txtCIF);
 			stmt.executeUpdate();
 			System.out.println("Se ha modificado la empresa correctamente");
+			resultado = "Correcto";
 			tablas();
 		} catch (SQLException e) {
+			resultado = "Incorrecto";
 			e.printStackTrace();
 		}
 		dirEmpresasM.actualizar();
@@ -903,11 +1054,19 @@ public class Modelo {
 			stmt.setString(2, txtExpediente);
 			stmt.executeUpdate();
 			System.out.println("Se ha modificado el alumno correctamente");
+			resultado = "Correcto";
 			tablas();
 		} catch (SQLException e) {
+			resultado = "Incorrecto";
 			e.printStackTrace();
 		}
 		tutAlumnosEdM.actualizar();
+	}
+
+	public void setTablaAlumnos(String eleccion) {
+		this.anaca = eleccion;
+		tablas();
+		dirAlumnos.actualizar();
 	}
 
 }

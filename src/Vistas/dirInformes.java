@@ -13,6 +13,7 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.border.EmptyBorder;
 import java.awt.Color;
 import javax.swing.JTextArea;
@@ -23,11 +24,10 @@ import javax.swing.border.LineBorder;
 import Aplicacion.Controlador;
 import Aplicacion.Modelo;
 import Aplicacion.Vistas;
-import javax.swing.JScrollPane;
-import javax.swing.JComboBox;
-import javax.swing.DefaultComboBoxModel;
+import javax.swing.JRadioButton;
+import javax.swing.ButtonGroup;
 
-public class dirAlumnos extends JFrame implements Vistas{
+public class dirInformes extends JFrame implements Vistas {
 
 	private Controlador miControlador;
 	private Modelo miModelo;
@@ -37,21 +37,26 @@ public class dirAlumnos extends JFrame implements Vistas{
 	private JLabel lblUsuario;
 	private JLabel lblDirector;
 	private JLabel lblAlumnos;
-	private JButton btnConsultar;
-	private JButton btnBuscar;
 	private JTable table;
 	private JScrollPane scrollPane;
-	private JComboBox comboBox;
-	
+	private JButton btnMostrar;
+	private final ButtonGroup buttonGroup = new ButtonGroup();
+	private JRadioButton rdbtnAT;
+	private JRadioButton rdbtnAE;
+	private JRadioButton rdbtnTC;
+	private JRadioButton rdbtnAPT;
+	private JRadioButton rdbtnIA;
+	private JRadioButton rdbtnIP;
+
 	public void setControlador(Controlador miControlador) {
 		this.miControlador = miControlador;
 	}
-	
+
 	public void setModelo(Modelo miModelo) {
 		this.miModelo = miModelo;
 	}
 
-	public dirAlumnos() {
+	public dirInformes() {
 		setTitle("Aplicacion de Gestion de FCTs - UEM");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 886, 639);
@@ -82,115 +87,108 @@ public class dirAlumnos extends JFrame implements Vistas{
 		lblDirector.setBounds(643, 44, 125, 16);
 		panelCabecera.add(lblDirector);
 
-		lblUsuario = new JLabel("");
+		lblUsuario = new JLabel("Usuario: Ana Manzanero");
 		lblUsuario.setBounds(622, 16, 152, 16);
 		panelCabecera.add(lblUsuario);
 
-		lblAlumnos = new JLabel("ALUMNOS");
-		lblAlumnos.setBounds(336, 6, 174, 65);
+		lblAlumnos = new JLabel("INFORMES");
+		lblAlumnos.setBounds(333, 6, 177, 65);
 		panelCabecera.add(lblAlumnos);
 		lblAlumnos.setFont(new Font("Lucida Grande", Font.PLAIN, 36));
-		
+
 		JButton btnExit_1 = new JButton("");
 		btnExit_1.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				miControlador.volverDirector();
 			}
 		});
-		btnExit_1.setIcon(new ImageIcon(dirAlumnos.class.getResource("/img/volver.png")));
+		btnExit_1.setIcon(new ImageIcon(dirInformes.class.getResource("/img/volver.png")));
 		btnExit_1.setBounds(780, 6, 67, 65);
 		panelCabecera.add(btnExit_1);
-		
-		btnConsultar = new JButton("Consultar");
-		btnConsultar.addActionListener(new ActionListener() {
+
+		btnMostrar = new JButton("Mostrar");
+		btnMostrar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				miControlador.directorAlumno();
+				actualizarTabla();
 			}
 		});
-		btnConsultar.setBackground(Color.DARK_GRAY);
-		btnConsultar.setIcon(new ImageIcon(dirAlumnos.class.getResource("/img/consultar.png")));
-		btnConsultar.setBounds(22, 134, 175, 65);
-		panel.add(btnConsultar);
-		
-		btnBuscar = new JButton("Buscar");
-		btnBuscar.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				miControlador.directorAlumnoBuscar();
-			}
-		});
-		btnBuscar.setIcon(new ImageIcon(dirAlumnos.class.getResource("/img/buscar.png")));
-		btnBuscar.setBounds(22, 368, 175, 65);
-		panel.add(btnBuscar);
-		
-		JButton btnEditar = new JButton("Editar");
-		btnEditar.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				miControlador.directorAlumnoEditar();
-			}
-		});
-		btnEditar.setIcon(new ImageIcon(dirAlumnos.class.getResource("/img/editar.png")));
-		btnEditar.setBounds(22, 520, 175, 65);
-		panel.add(btnEditar);
-		
-		JButton btnAnexos = new JButton("Anexos");
-		btnAnexos.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				
-			}
-		});
-		btnAnexos.setIcon(new ImageIcon(dirAlumnos.class.getResource("/img/anexo.png")));
-		btnAnexos.setBounds(22, 443, 175, 65);
-		panel.add(btnAnexos);
-		
+		btnMostrar.setIcon(new ImageIcon(dirInformes.class.getResource("/img/buscar.png")));
+		btnMostrar.setBounds(674, 153, 175, 48);
+		panel.add(btnMostrar);
+
 		scrollPane = new JScrollPane();
-		scrollPane.setBounds(254, 134, 602, 451);
+		scrollPane.setBounds(41, 213, 816, 383);
 		panel.add(scrollPane);
-		
+
 		table = new JTable();
 		table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-		
+
 		scrollPane.setViewportView(table);
-		
-		comboBox = new JComboBox();
-		comboBox.setModel(new DefaultComboBoxModel(new String[] {"2019/2020", "2018/2019", "2017/2018"}));
-		comboBox.setBounds(32, 211, 121, 36);
-		panel.add(comboBox);
-		
-		JButton btnNewButton = new JButton("");
-		btnNewButton.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				miControlador.tablaAlumnoTutor();
-			}
-		});
-		btnNewButton.setIcon(new ImageIcon(dirAlumnos.class.getResource("/img/icons8-actualizar-30.png")));
-		btnNewButton.setBounds(154, 211, 40, 36);
-		panel.add(btnNewButton);
-		
+
+		rdbtnAT = new JRadioButton("Alumnos por Tutor");
+		buttonGroup.add(rdbtnAT);
+		rdbtnAT.setForeground(Color.WHITE);
+		rdbtnAT.setBounds(57, 120, 151, 23);
+		panel.add(rdbtnAT);
+
+		rdbtnAE = new JRadioButton("Alumnos por Empresa");
+		buttonGroup.add(rdbtnAE);
+		rdbtnAE.setForeground(Color.WHITE);
+		rdbtnAE.setBounds(373, 120, 175, 23);
+		panel.add(rdbtnAE);
+
+		rdbtnTC = new JRadioButton("Tutores por Ciclo");
+		buttonGroup.add(rdbtnTC);
+		rdbtnTC.setForeground(Color.WHITE);
+		rdbtnTC.setBounds(220, 120, 141, 23);
+		panel.add(rdbtnTC);
+
+		rdbtnAPT = new JRadioButton("Alumnos en practicas por Tutor");
+		buttonGroup.add(rdbtnAPT);
+		rdbtnAPT.setForeground(Color.WHITE);
+		rdbtnAPT.setBounds(560, 120, 231, 23);
+		panel.add(rdbtnAPT);
+
+		rdbtnIA = new JRadioButton("Informe que piden las aseguradoras");
+		buttonGroup.add(rdbtnIA);
+		rdbtnIA.setForeground(Color.WHITE);
+		rdbtnIA.setBounds(392, 155, 257, 23);
+		panel.add(rdbtnIA);
+
+		rdbtnIP = new JRadioButton("Informe general para la gestion de las practicas");
+		buttonGroup.add(rdbtnIP);
+		rdbtnIP.setForeground(Color.WHITE);
+		rdbtnIP.setBounds(56, 155, 330, 23);
+		panel.add(rdbtnIP);
+
 		addWindowListener(new WindowAdapter() {
 			public void windowActivated(WindowEvent e) {
-				miControlador.tablaAlumnoTutor();
+				actualizarTabla();
 			}
 		});
 	}
-	
+
 	public void nombre() {
 		String nombre = miModelo.getNombre();
 		lblUsuario.setText("Usuario: " + nombre);
 	}
-	
-	public String getEleccion() {
-		String item = (String) comboBox.getSelectedItem();
-		if (item.equals("2019/2020")) {
-			return "2019";
-		} else if (item.equals("2018/2019")) {
-			return "2018";
-		} else if (item.equals("2017/2018")) {
-			return "2017";
-		}
-		return null;	
-	}
 
-	public void actualizar() {
-		table.setModel(miModelo.getTablaDirAlumnos());
+	/*
+	 * Con este método vamos cambiando el informe que queremos mostrar
+	 */
+	public void actualizarTabla() {
+		if (rdbtnAT.isSelected()) {
+			table.setModel(miModelo.getTablaAlumnosTutor());
+		} else if (rdbtnTC.isSelected()) {
+			table.setModel(miModelo.getTablaTutoresCiclo());
+		} else if (rdbtnAE.isSelected()) {
+			table.setModel(miModelo.getTablaAlumnosEmpresa());
+		} else if (rdbtnAPT.isSelected()) {
+			table.setModel(miModelo.getTablaAlumnosPracticasTutor());
+		} else if (rdbtnIP.isSelected()) {
+			table.setModel(miModelo.getTablaInformePracticas());
+		} else if (rdbtnIA.isSelected()) {
+			table.setModel(miModelo.getTablaInformeAseguradoras());
+		}
 	}
 }

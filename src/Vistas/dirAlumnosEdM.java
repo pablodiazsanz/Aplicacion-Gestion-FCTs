@@ -47,6 +47,9 @@ public class dirAlumnosEdM extends JFrame implements Vistas{
 	private JTextField txtModificacion;
 	private JButton btnCambiar;
 	private JButton btnVolver;
+	private JPanel panelInformacion;
+	private JLabel lblInfo;
+	private JLabel lblIncorrecto;
 	
 	public void setControlador(Controlador miControlador) {
 		this.miControlador = miControlador;
@@ -140,7 +143,6 @@ public class dirAlumnosEdM extends JFrame implements Vistas{
 		JButton btnAnexos = new JButton("Anexos");
 		btnAnexos.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				miControlador.directorAlumnoAnexos();
 			}
 		});
 		btnAnexos.setIcon(new ImageIcon(dirAlumnos.class.getResource("/img/anexo.png")));
@@ -160,30 +162,30 @@ public class dirAlumnosEdM extends JFrame implements Vistas{
 		panelModificar.add(lblModificar);
 		
 		lblNewLabel = new JLabel("Introduzca el expediente del alumno a modificar");
-		lblNewLabel.setBounds(51, 91, 304, 16);
+		lblNewLabel.setBounds(51, 139, 304, 16);
 		panelModificar.add(lblNewLabel);
 		
 		txtExpediente = new JTextField();
 		txtExpediente.setColumns(10);
-		txtExpediente.setBounds(374, 88, 180, 21);
+		txtExpediente.setBounds(374, 136, 180, 21);
 		panelModificar.add(txtExpediente);
 		
 		lblquAtributoDesea = new JLabel("�Qu� atributo desea modificar?");
-		lblquAtributoDesea.setBounds(51, 159, 200, 16);
+		lblquAtributoDesea.setBounds(51, 201, 207, 16);
 		panelModificar.add(lblquAtributoDesea);
 		
 		comboBox = new JComboBox();
 		comboBox.setModel(new DefaultComboBoxModel(new String[] {"Nombre", "Apellido", "DNI", "Fecha de Nacimiento", "Nacionalidad"}));
-		comboBox.setBounds(263, 158, 141, 21);
+		comboBox.setBounds(279, 200, 141, 21);
 		panelModificar.add(comboBox);
 		
 		lblIntroduzcaLaModificacin = new JLabel("Introduzca la modificaci�n:");
-		lblIntroduzcaLaModificacin.setBounds(51, 230, 190, 16);
+		lblIntroduzcaLaModificacin.setBounds(51, 269, 190, 16);
 		panelModificar.add(lblIntroduzcaLaModificacin);
 		
 		txtModificacion = new JTextField();
 		txtModificacion.setColumns(10);
-		txtModificacion.setBounds(253, 227, 301, 21);
+		txtModificacion.setBounds(253, 266, 301, 21);
 		panelModificar.add(txtModificacion);
 		
 		btnCambiar = new JButton("Cambiar");
@@ -192,7 +194,7 @@ public class dirAlumnosEdM extends JFrame implements Vistas{
 				miControlador.directormodificarAlumno();
 			}
 		});
-		btnCambiar.setBounds(370, 313, 141, 65);
+		btnCambiar.setBounds(370, 334, 141, 65);
 		panelModificar.add(btnCambiar);
 		
 		btnVolver = new JButton("Volver");
@@ -201,8 +203,22 @@ public class dirAlumnosEdM extends JFrame implements Vistas{
 				miControlador.directorAlumnoEditar();
 			}
 		});
-		btnVolver.setBounds(100, 313, 141, 65);
+		btnVolver.setBounds(100, 334, 141, 65);
 		panelModificar.add(btnVolver);
+		
+		panelInformacion = new JPanel();
+		panelInformacion.setLayout(null);
+		panelInformacion.setBounds(103, 74, 424, 31);
+		panelModificar.add(panelInformacion);
+		
+		lblInfo = new JLabel("Introduzca los Datos");
+		lblInfo.setBounds(6, 5, 412, 20);
+		panelInformacion.add(lblInfo);
+		
+		lblIncorrecto = new JLabel("");
+		lblIncorrecto.setForeground(new Color(220, 20, 60));
+		lblIncorrecto.setBounds(6, 5, 412, 20);
+		panelInformacion.add(lblIncorrecto);
 	}
 
 	public void nombre() {
@@ -235,7 +251,16 @@ public class dirAlumnosEdM extends JFrame implements Vistas{
 	}
 
 	public void actualizar() {
-		miControlador.directorAlumnoEditar();
+		String resultado = miModelo.getResultado();
+		if (resultado.equals("Correcto")) {
+			miControlador.directorAlumnoEditar();
+			lblInfo.setText("Introduzca los Datos");
+			lblIncorrecto.setText("");
+		}
+		else {
+			lblInfo.setText("");
+			lblIncorrecto.setText("Algun dato es incorrecto. Vuelva a intentarlo.");
+		}
 		
 	}
 }

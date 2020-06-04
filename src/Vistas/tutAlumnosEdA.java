@@ -55,6 +55,8 @@ public class tutAlumnosEdA extends JFrame implements Vistas{
 	private JLabel lblAnoAcademico;
 	private JTextField txtAnoAcademico;
 	private JPanel panelInformacion;
+	private JLabel lblIncorrecto;
+	private JLabel lblInfo;
 	
 	public void setControlador(Controlador miControlador) {
 		this.miControlador = miControlador;
@@ -148,7 +150,6 @@ public class tutAlumnosEdA extends JFrame implements Vistas{
 		JButton btnAnexos = new JButton("Anexos");
 		btnAnexos.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				miControlador.tutorAlumnosAnexos();
 			}
 		});
 		btnAnexos.setIcon(new ImageIcon(tutAlumnos.class.getResource("/img/anexo.png")));
@@ -262,11 +263,12 @@ public class tutAlumnosEdA extends JFrame implements Vistas{
 		panelAnadir.add(panelInformacion);
 		panelInformacion.setLayout(null);
 		
-		JLabel lblInformacion = new JLabel("Introduzca los Datos");
-		lblInformacion.setBounds(6, 5, 412, 20);
-		panelInformacion.add(lblInformacion);
+		lblInfo = new JLabel("Introduzca los Datos");
+		lblInfo.setBounds(6, 5, 412, 20);
+		panelInformacion.add(lblInfo);
 		
-		JLabel lblIncorrecto = new JLabel("");
+		lblIncorrecto = new JLabel("");
+		lblIncorrecto.setForeground(new Color(220, 20, 60));
 		lblIncorrecto.setBounds(6, 5, 412, 20);
 		panelInformacion.add(lblIncorrecto);
 	}
@@ -309,6 +311,15 @@ public class tutAlumnosEdA extends JFrame implements Vistas{
 	}
 
 	public void actualizar() {
-		miControlador.tutorAlumnosEditar();
+		String resultado = miModelo.getResultado();
+		if (resultado.equals("Correcto")) {
+			miControlador.tutorAlumnosEditar();
+			lblInfo.setText("Introduzca los Datos");
+			lblIncorrecto.setText("");
+		}
+		else {
+			lblInfo.setText("");
+			lblIncorrecto.setText("Algun dato es incorrecto. Vuelva a intentarlo.");
+		}
 	}
 }

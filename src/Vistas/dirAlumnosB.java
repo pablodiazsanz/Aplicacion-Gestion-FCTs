@@ -5,6 +5,8 @@ import java.awt.EventQueue;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -22,6 +24,9 @@ import Aplicacion.Modelo;
 import Aplicacion.Vistas;
 
 import javax.swing.JTextField;
+import javax.swing.ListSelectionModel;
+import javax.swing.JScrollBar;
+import javax.swing.JScrollPane;
 
 public class dirAlumnosB extends JFrame implements Vistas{
 
@@ -40,6 +45,7 @@ public class dirAlumnosB extends JFrame implements Vistas{
 	private JLabel lblquAlumnoDesea;
 	private JTextField textField;
 	private JButton btnNewButton;
+	private JTextField textField_1;
 	private JTable table;
 	
 	public void setControlador(Controlador miControlador) {
@@ -134,7 +140,6 @@ public class dirAlumnosB extends JFrame implements Vistas{
 		JButton btnAnexos = new JButton("Anexos");
 		btnAnexos.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				miControlador.directorAlumnoAnexos();
 			}
 		});
 		btnAnexos.setIcon(new ImageIcon(dirAlumnos.class.getResource("/img/anexo.png")));
@@ -153,8 +158,8 @@ public class dirAlumnosB extends JFrame implements Vistas{
 		lblBuscar.setBounds(265, 6, 80, 65);
 		panelBuscar.add(lblBuscar);
 
-		lblquAlumnoDesea = new JLabel("¿Qué alumno desea buscar?");
-		lblquAlumnoDesea.setBounds(69, 91, 172, 16);
+		lblquAlumnoDesea = new JLabel("Nombre del alumno");
+		lblquAlumnoDesea.setBounds(117, 91, 124, 16);
 		panelBuscar.add(lblquAlumnoDesea);
 
 		textField = new JTextField();
@@ -163,13 +168,30 @@ public class dirAlumnosB extends JFrame implements Vistas{
 		panelBuscar.add(textField);
 
 		btnNewButton = new JButton("Encontrar");
-		btnNewButton.setBounds(237, 135, 141, 65);
+		btnNewButton.setBounds(237, 170, 141, 65);
 		panelBuscar.add(btnNewButton);
-
+		
+		textField_1 = new JTextField();
+		textField_1.setColumns(10);
+		textField_1.setBounds(265, 121, 289, 21);
+		panelBuscar.add(textField_1);
+		
+		JLabel lblApellidoDelAlumno = new JLabel("Apellido del alumno");
+		lblApellidoDelAlumno.setBounds(115, 124, 126, 16);
+		panelBuscar.add(lblApellidoDelAlumno);
+		
+		JScrollPane scrollPane = new JScrollPane();
+		scrollPane.setBounds(36, 253, 535, 165);
+		panelBuscar.add(scrollPane);
+		
 		table = new JTable();
-		table.setBorder(new LineBorder(new Color(0, 0, 0)));
-		table.setBounds(36, 253, 535, 165);
-		panelBuscar.add(table);
+		table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+		scrollPane.setViewportView(table);
+		addWindowListener(new WindowAdapter() {
+			public void windowActivated(WindowEvent e) {
+				table.setModel(miModelo.getTablaDirGrupos());
+			}
+		});
 	}
 
 	public void nombre() {

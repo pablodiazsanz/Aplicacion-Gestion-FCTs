@@ -19,6 +19,7 @@ SET time_zone = "+00:00";
 
 --
 -- Base de datos: `ProyectoIntegrador`
+CREATE DATABASE ProyectoIntegrador;
 --
 
 -- --------------------------------------------------------
@@ -392,7 +393,7 @@ COMMIT;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 
 /* 
- * -- SELECTS
+-- SELECTS
 
 -- Muestra todos los alumnos
 SELECT * FROM Alumno;
@@ -436,22 +437,72 @@ LEFT JOIN Tutor
 ON Gestiona.tutor_dni = Tutor.dni
 WHERE Tutor.users_usr=?;
 
--- Mustra todos los tutores
+-- Muestra todos los tutores
 SELECT * FROM Tutor;
 
 -- Muestra el tutor para cada empresa
 SELECT * FROM Tutor WHERE users_usr=?;
 
+
+
+-- INSERTS, UPDATES Y DELETES
+
+-- Modifica a los alumnos de director y tutor
 UPDATE ProyectoIntegrador.Alumno SET " + eleccion + "=? WHERE expediente=?
 
+-- Modifica a las empresas de director y tutor
 UPDATE ProyectoIntegrador.Empresa SET " + eleccion + "=? WHERE cif=?
 
+-- Elimina a las empresas de tutor y director
 DELETE FROM ProyectoIntegrador.Empresa WHERE nombre=? AND cif=?
 
+-- Elimina a los alumnos de tutor y director
 DELETE FROM ProyectoIntegrador.Pertenece WHERE alumno_expediente=?
 DELETE FROM ProyectoIntegrador.Alumno WHERE nombre=? AND expediente=?
 
+-- Inserta a las empresas de tutor y director
 INSERT INTO ProyectoIntegrador.Empresa (nombre, cif, direccion, localidad, telefono, email, responsable_empresa) VALUES (?, ?, ?, ?, ?, ?, ?)
 
+-- Inserta a los alumnos de tutor y director
 INSERT INTO ProyectoIntegrador.Pertenece (alumno_expediente, grupo_cod_grupo, año_academico) VALUES (?, ?, ?)
 INSERT INTO ProyectoIntegrador.Alumno (expediente, nombre, apellido, dni, fecha_nacimiento, nacionalidad) VALUES (?, ?, ?, ?, ?, ?)
+
+
+
+-- TABLAS DE LOS INFORMES
+
+-- Alumnos por tutor
+SELECT Pe.año_academico "Año", CONCAT(T.nombre, T.apellido) "Tutor", nombre_ciclo "Ciclo",
+CONCAT( A.nombre, CONCAT(' ', A.apellido)) "Alumno", E.nombre "Empresa", anexo_2_1 "Anexo 2.1",anexo_3 "Anexo 3",
+anexo_7 "Anexo 7",anexo_8 "Anexo 8"
+FROM Alumno A, Gestiona Ge ,Tutor T, Empresa E, Practica P, Grupo G, Pertenece Pe
+WHERE E.CIF = P.empresa_cif AND A.expediente = P.alumno_expediente AND T.dni = Ge.tutor_dni 
+AND G.cod_grupo = Ge.grupo_cod_grupo AND A.expediente = Pe.año_academico AND Pe.grupo_cod_grupo = G.cod_grupo
+
+-- Tutores por ciclo
+SELECT Pe.año_academico "Año",nombre_ciclo "Ciclo",T.dni "DNI", T.nombre "Nombre", T.apellido "Apellidos", C.localidad "Centro", G.cod_grupo "Grupo"
+FROM Centro C, Gestiona Ge, Tutor T, Grupo G 
+WHERE T.dni = Ge.tutor_dni AND G.cod_grupo = Ge.grupo_cod_grupo AND C.cod_centro = T.centro_cod_centro 
+
+-- Alumnos por empresa
+SELECT Pe.año_academico "Año", Co.numconv "Nº Convenio", E.nombre "Empresa", A.dni "DNI", CONCAT (A.nombre, CONCAT(' ', A.apellido)) "Alumno", G.cod_grupo "Grupo", CONCAT(T.nombre, CONCAT(' ', T.apellido)) "Tutor C.", P.TutorE "Tutor E." 
+FROM Gestiona Ge, Colabora Co, Empresa E, Alumno A, Grupo G, Tutor T, Practica P, Pertenece Pe
+WHERE T.dni = Ge.tutor_dni AND G.cod_grupo = Ge.grupo_cod_grupo AND A.expediente = Pe.año_academico AND Pe.grupo_cod_grupo = G.cod_grupo AND E.cif = Co.empresa_cif AND Co.centro_cod_centro = T.centro_cod_centro AND P.alumno_expediente = A.expediente
+
+-- Alumnos en practicas por tutor
+SELECT Ge.año_academico "Año", CONCAT( T.nombre, CONCAT(' ', T.apellido)) "Tutor C.", G.nombre_ciclo "Ciclo", CONCAT(A.nombre, CONCAT(' ', A.apellido)) "Alumno", E.nombre "Empresa", Co.numconv "Nº Convenio",P.fecha_ini "Fecha Inicio", P.fecha_fin "Fecha Fin", P.horario "Horario", P.TutorE "Tutor E." 
+FROM Gestiona Ge, Colabora Co, Empresa E, Alumno A, Grupo G, Tutor T, Practica P, Pertenece Pe
+WHERE E.CIF = P.empresa_cif AND A.expediente = P.alumno_expediente AND A.expediente = Pe.año_academico AND Pe.grupo_cod_grupo = G.cod_grupo AND E.cif = Co.empresa_cif AND T.dni = Ge.tutor_dni AND G.cod_grupo = Ge.grupo_cod_grupo
+
+-- Informe general para gestion de las practicas
+SELECT Ge.año_academico "Año", A.expediente "Exp.", CONCAT(A.nombre, CONCAT(' ', A.apellido)) "Alumno", G.cod_grupo "Grupo",  E.nombre "Empresa", E.Localidad "Provincia", E.responsable_empresa "Resp. E.", P.TutorE "Tutor E.", E.telefono "Tlf", CONCAT(P.fecha_ini, CONCAT(' - ', P.fecha_fin)) "F. Ini-Fin", CONCAT( T.nombre, CONCAT(' ', T.apellido)) "Tutor C.", E.email "Email"
+FROM Gestiona Ge, Colabora Co, Empresa E, Alumno A, Grupo G, Tutor T, Practica P, Pertenece Pe
+WHERE E.CIF = P.empresa_cif AND A.expediente = P.alumno_expediente AND A.expediente = Pe.año_academico AND Pe.grupo_cod_grupo = G.cod_grupo AND E.cif = Co.empresa_cif AND T.dni = Ge.tutor_dni AND G.cod_grupo = Ge.grupo_cod_grupo
+
+-- Informe que pide las aseguradoras
+SELECT Ge.año_academico "Año", A.expediente "Exp.", CONCAT(A.nombre, CONCAT(' ', A.apellido)) "Alumno", G.nombre_ciclo "Ciclo",  A.dni "DNI", E.Localidad "Localidad", E.nombre "Empresa", A.nacionalidad "Nacional.", YEAR(CURDATE())-YEAR(A.fecha_nacimiento) + IF(DATE_FORMAT(CURDATE(),'%m-%d') > DATE_FORMAT(A.fecha_nacimiento,'%m-%d'), 0 , -1 ) "Edad", CONCAT(P.fecha_ini, CONCAT(' - ', P.fecha_fin)) "Periodo"
+FROM Gestiona Ge, Colabora Co, Empresa E, Alumno A, Grupo G, Tutor T, Practica P, Pertenece Pe
+WHERE E.CIF = P.empresa_cif AND A.expediente = P.alumno_expediente AND A.expediente = Pe.año_academico AND Pe.grupo_cod_grupo = G.cod_grupo AND E.cif = Co.empresa_cif AND T.dni = Ge.tutor_dni AND G.cod_grupo = Ge.grupo_cod_grupo
+
+*/
+

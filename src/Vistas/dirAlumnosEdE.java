@@ -44,6 +44,8 @@ public class dirAlumnosEdE extends JFrame implements Vistas{
 	private JTextField txtId;
 	private JButton btnVolver;
 	private JPanel panelInformacion;
+	private JLabel lblInfo;
+	private JLabel lblIncorrecto;
 
 	public void setControlador(Controlador miControlador) {
 		this.miControlador = miControlador;
@@ -137,7 +139,6 @@ public class dirAlumnosEdE extends JFrame implements Vistas{
 		JButton btnAnexos = new JButton("Anexos");
 		btnAnexos.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				miControlador.directorAlumnoAnexos();
 			}
 		});
 		btnAnexos.setIcon(new ImageIcon(dirAlumnos.class.getResource("/img/anexo.png")));
@@ -197,11 +198,11 @@ public class dirAlumnosEdE extends JFrame implements Vistas{
 		panelEliminar.add(panelInformacion);
 		panelInformacion.setLayout(null);
 		
-		JLabel lblInfo = new JLabel("Introduzca los Datos");
+		lblInfo = new JLabel("Introduzca los Datos");
 		lblInfo.setBounds(6, 5, 412, 20);
 		panelInformacion.add(lblInfo);
 		
-		JLabel lblIncorrecto = new JLabel("");
+		lblIncorrecto = new JLabel("");
 		lblIncorrecto.setForeground(new Color(220, 20, 60));
 		lblIncorrecto.setBounds(6, 5, 412, 20);
 		panelInformacion.add(lblIncorrecto);
@@ -221,6 +222,15 @@ public class dirAlumnosEdE extends JFrame implements Vistas{
 	}
 
 	public void actualizar() {
-		miControlador.directorAlumnoEditar();
+		String resultado = miModelo.getResultado();
+		if (resultado.equals("Correcto")) {
+			miControlador.directorAlumnoEditar();
+			lblInfo.setText("Introduzca los Datos");
+			lblIncorrecto.setText("");
+		}
+		else {
+			lblInfo.setText("");
+			lblIncorrecto.setText("Algun dato es incorrecto. Vuelva a intentarlo.");
+		}
 	}
 }
