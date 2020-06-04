@@ -365,6 +365,7 @@ public class Modelo {
 			ex.printStackTrace();
 		}
 	}
+
 	/*
 	 * Con este método nos conectamos a la base de datos.
 	 */
@@ -376,10 +377,10 @@ public class Modelo {
 			System.out.println("Error de conexion. Comprobar datos en la configuracion de conexion");
 		}
 	}
-	
+
 	/*
-	 * Con este método cogemos los datos del fichero .ini y los cargamos para establecer
-	 * la conexión.
+	 * Con este método cogemos los datos del fichero .ini y los cargamos para
+	 * establecer la conexión.
 	 */
 	public void actualizarBD(String usuarioBD, String passwdBD, String urlBD) {
 		miFichero.delete();
@@ -407,7 +408,7 @@ public class Modelo {
 	public String getUrl() {
 		return url;
 	}
-	
+
 	/*
 	 * Con este método terminamos la conexión a la base de datos.
 	 */
@@ -420,9 +421,10 @@ public class Modelo {
 			e.printStackTrace();
 		}
 	}
-	
+
 	/*
-	 * Con este método validamos el usuario y la contraseña para poder iniciar sesion en la aplicacion
+	 * Con este método validamos el usuario y la contraseña para poder iniciar
+	 * sesion en la aplicacion
 	 */
 	public void iniciarSesion(String usr, String pwd) {
 		String query = "SELECT * FROM ProyectoIntegrador.Users WHERE usr=? AND pwd=?";
@@ -459,7 +461,8 @@ public class Modelo {
 	}
 
 	/*
-	 * Con este método escogemos el rol para iniciar sesion cómo tutor, director o empresa.
+	 * Con este método escogemos el rol para iniciar sesion cómo tutor, director o
+	 * empresa.
 	 */
 	public void elegirRol(String usr, String pwd) {
 		String query = "SELECT rol FROM ProyectoIntegrador.Users WHERE usr=? AND pwd=?";
@@ -478,9 +481,10 @@ public class Modelo {
 	public String getRol() {
 		return this.rol;
 	}
-	
+
 	/*
-	 * Con este método ponemos el nombre a cada usuario cuando accede e inicia sesión.
+	 * Con este método ponemos el nombre a cada usuario cuando accede e inicia
+	 * sesión.
 	 */
 	public void nomUsuario(String usr) {
 		String query = "SELECT CONCAT(nombre, ' ', apellido) FROM ProyectoIntegrador.Tutor WHERE users_usr=?";
@@ -604,6 +608,11 @@ public class Modelo {
 		tablaInformePracticas = cargarTabla(sqlInformePracticas);
 		tablaInformeAseguradoras = cargarTabla(sqlInformeAseguradoras);
 		System.out.println("Informes cargados");
+	}
+
+	public void ejecutarScriptsAA(String anaca) {
+		this.sqlDirAlumnos = "SELECT A.* FROM Alumno A, Pertenece P WHERE A.expediente = P.alumno_expediente AND año_academico = '"
+				+ anaca + "'";
 	}
 
 	/*
@@ -759,7 +768,7 @@ public class Modelo {
 	}
 
 	/*
-	 * Con estos métodos siguientes 
+	 * Con estos métodos siguientes
 	 */
 	public void insertarNuevoUsuario(String usr, String pwd, String rol) {
 		String query = "INSERT INTO ProyectoIntegrador.Users (usr, pwd, rol) VALUES (?, ?, ?)";

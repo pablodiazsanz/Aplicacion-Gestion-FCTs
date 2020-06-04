@@ -163,6 +163,7 @@ public class dirInformes extends JFrame implements Vistas {
 
 		addWindowListener(new WindowAdapter() {
 			public void windowActivated(WindowEvent e) {
+				actualizarTabla();
 			}
 		});
 	}
