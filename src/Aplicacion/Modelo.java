@@ -619,8 +619,9 @@ public class Modelo {
 	 * Estas son las query que ejecutamos para cargar las tablas
 	 */
 	public void ejecutarScripts(String usr) {
-		this.sqlDirAlumnos = "SELECT A.* FROM Alumno A, Pertenece P WHERE A.expediente = P.alumno_expediente AND año_academico = '"
-				+ anaca + "'";
+		//this.sqlDirAlumnos = "SELECT A.* FROM Alumno A, Pertenece P WHERE A.expediente = P.alumno_expediente AND año_academico = '"
+		//		+ anaca + "'";
+		this.sqlDirAlumnos = "SELECT * FROM ProyectoIntegrador.Alumno";
 		this.sqlDirEmpresas = "SELECT * FROM ProyectoIntegrador.Empresa";
 		this.sqlDirGrupos = "SELECT * FROM ProyectoIntegrador.Grupo";
 		this.sqlDirTutores = "SELECT * FROM ProyectoIntegrador.Tutor";
